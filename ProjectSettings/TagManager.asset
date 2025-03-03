@@ -11,11 +11,11 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - Tile
+  - Coin
+  - Tile Faller
+  - Score Counter
   - 
   - 
   - 

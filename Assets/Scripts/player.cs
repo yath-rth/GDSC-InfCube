@@ -6,12 +6,12 @@ public class player : MonoBehaviour
 {
     Controls controls;
     CharacterController cc;
-    Transform playerMesh;
 
+    [SerializeField]Transform cam;
     [SerializeField, Range(0, 100)] float speed, gravity, rotationSpeed;
 
     int side = 0;
-    Vector3 velocity, move;
+    Vector3 velocity, move, cameraOffset;
     Quaternion rotation;
 
     void Awake()
@@ -23,7 +23,7 @@ public class player : MonoBehaviour
 
         cc = GetComponent<CharacterController>();
 
-        playerMesh = transform.GetChild(0).transform;
+        if(cam != null) cameraOffset = cam.position - transform.position;
     }
 
     void OnEnable()
@@ -42,11 +42,13 @@ public class player : MonoBehaviour
             if (!cc.isGrounded) velocity.y -= gravity * Time.deltaTime;
             else velocity.y = 0;
 
-            move = new Vector3(side * speed, velocity.y, speed);
-            cc.Move(move * Time.deltaTime);
+            move = new Vector3(side * speed, velocity.y, speed).normalized;
+            cc.Move(move * Time.deltaTime * speed);
 
             rotation = Quaternion.Euler(0, side * 45f, 0);
-            playerMesh.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * rotationSpeed);
+            transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * rotationSpeed);
+
+            if(cam != null) cam.position = transform.position + cameraOffset;
         }
     }
 

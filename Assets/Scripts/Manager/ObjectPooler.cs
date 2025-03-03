@@ -20,9 +20,7 @@ public class ObjectPooler : MonoBehaviour
     private void Awake()
     {
         if (instance != null) Destroy(instance.gameObject);
-
         instance = this;
-        DontDestroyOnLoad(this.gameObject);
 
         for (int i = 0; i < items.Count; i++)
         {
