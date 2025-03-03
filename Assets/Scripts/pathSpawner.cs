@@ -12,7 +12,7 @@ public class pathSpawner : MonoBehaviour
     [SerializeField, Range(0, 20)] int minLength_min, maxLength_min, minLength_max, maxLength_max;
     [SerializeField, Range(0f, 2f)] float timeBTWspawns;
 
-    int count, side, minLength, maxLength;
+    int count, side = -1, minLength, maxLength;
     float lastTime = 0;
     GameObject spawnedTile;
     Vector3 spawnPos;
@@ -46,7 +46,8 @@ public class pathSpawner : MonoBehaviour
             minLength = Random.Range(minLength_min, minLength_max);
             maxLength = Random.Range(maxLength_min, maxLength_max);
             count = Random.Range(minLength, maxLength);
-            side = Random.Range(0, 2);
+            if(side == -1) side = Random.Range(0, 2);
+            else side = (side == 0) ? 1 : 0;
         }
 
         if (Time.time - lastTime > timeBTWspawns)
