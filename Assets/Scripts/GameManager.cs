@@ -8,8 +8,10 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    [SerializeField] TMP_Text scoreText;
-    [SerializeField] GameObject scoreText_obj;
+    public bool isGameOver = false;
+
+    [SerializeField] TMP_Text scoreText, endScreenScoreText;
+    [SerializeField] GameObject scoreText_obj, endScreen_Obj, deathParticles, otherUI_obj;
 
     int score;
 
@@ -30,6 +32,15 @@ public class GameManager : MonoBehaviour
 
         scoreText_obj.transform.localScale = Vector3.one;
         if (scoreText != null) scoreText.text = score.ToString();
-        if(scoreText_obj != null) scoreText_obj.transform.DOPunchScale(Vector3.one * 0.2f, 0.1f);
+        if (scoreText_obj != null) scoreText_obj.transform.DOPunchScale(Vector3.one * 0.2f, 0.1f);
+    }
+
+    public void GameOver()
+    {
+        isGameOver = true;
+        if(endScreen_Obj != null)endScreen_Obj.SetActive(true);
+        if(deathParticles != null) deathParticles.SetActive(true);
+        if(endScreenScoreText != null) endScreenScoreText.text = score.ToString("D5");
+        if(otherUI_obj != null) otherUI_obj.SetActive(false);
     }
 }

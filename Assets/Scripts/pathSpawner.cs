@@ -21,13 +21,13 @@ public class pathSpawner : MonoBehaviour
     {
         pool = ObjectPooler.instance;
         spawnPos = Vector3.zero;
-        spawnPos.z = -tileSize * 5;
+        spawnPos.z = -tileSize * 8;
 
-        if(player != null) player.position = new Vector3(0, player.position.y, spawnPos.z);
+        if (player != null) player.position = new Vector3(0, player.position.y, spawnPos.z);
 
-        if(pool != null)
+        if (pool != null)
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 8; i++)
             {
                 spawnedTile = pool.GetObject(0);
                 spawnedTile.transform.position = spawnPos;
@@ -46,11 +46,11 @@ public class pathSpawner : MonoBehaviour
             minLength = Random.Range(minLength_min, minLength_max);
             maxLength = Random.Range(maxLength_min, maxLength_max);
             count = Random.Range(minLength, maxLength);
-            if(side == -1) side = Random.Range(0, 2);
+            if (side == -1) side = Random.Range(0, 2);
             else side = (side == 0) ? 1 : 0;
         }
 
-        if (Time.time - lastTime > timeBTWspawns)
+        if (Time.time - lastTime > timeBTWspawns && !GameManager.instance.isGameOver)
         {
             lastTime = Time.time;
 
