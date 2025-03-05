@@ -1576,7 +1576,7 @@ MonoBehaviour:
   maxLength_min: 6
   minLength_max: 8
   maxLength_max: 13
-  timeBTWspawns: 0.2
+  timeBTWspawns: 0.22
 --- !u!114 &611125900
 MonoBehaviour:
   m_ObjectHideFlags: 0
