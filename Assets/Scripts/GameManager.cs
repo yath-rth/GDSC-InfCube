@@ -10,10 +10,10 @@ public class GameManager : MonoBehaviour
 
     public bool isGameOver = false;
 
-    [SerializeField] TMP_Text scoreText, endScreenScoreText, pauseScreenScoreText;
+    [SerializeField] TMP_Text scoreText, endScreenScoreText, pauseScreenScoreText, highScoreText;
     [SerializeField] GameObject scoreText_obj, endScreen_Obj, deathParticles, otherUI_obj, pauseScreen_obj;
 
-    int score;
+    int score, highScore;
 
     void OnDestroy()
     {
@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour
     {
         if (instance != null) Destroy(instance.gameObject);
         instance = this;
+
+        highScore = PlayerPrefs.GetInt("HighScore", 0);
     }
 
     public void addScore(int value)
@@ -33,6 +35,8 @@ public class GameManager : MonoBehaviour
         scoreText_obj.transform.localScale = Vector3.one;
         if (scoreText != null) scoreText.text = score.ToString();
         if (scoreText_obj != null) scoreText_obj.transform.DOPunchScale(Vector3.one * 0.2f, 0.1f);
+
+        if(score > highScore) highScore = score;
     }
 
     public void GameOver()
@@ -42,6 +46,9 @@ public class GameManager : MonoBehaviour
         if (deathParticles != null) deathParticles.SetActive(true);
         if (endScreenScoreText != null) endScreenScoreText.text = score.ToString("D5");
         if (otherUI_obj != null) otherUI_obj.SetActive(false);
+        if(highScoreText != null) highScoreText.text = highScore.ToString("D5");
+
+        PlayerPrefs.SetInt("HighScore", highScore);
     }
 
     public void pause()

@@ -2,10 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class sceneManager : MonoBehaviour
 {
     [SerializeField] int gameIndex, mainmenuIndex;
+    [SerializeField] TMP_Text highScoreText;
+
+    private void Awake()
+    {
+        if (highScoreText != null) highScoreText.text = PlayerPrefs.GetInt("HighScore", 0).ToString("D5");
+    }
 
     public void Game()
     {
