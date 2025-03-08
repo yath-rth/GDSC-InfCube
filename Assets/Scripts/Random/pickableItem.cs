@@ -4,8 +4,29 @@ using UnityEngine;
 
 public class pickableItem : MonoBehaviour
 {
+    [SerializeField] GameObject coinMesh, coinParticles;
+
     private void Update()
     {
-        transform.Rotate(0, 100f * Time.deltaTime, 0, Space.Self);
+        coinMesh.transform.Rotate(0, 100f * Time.deltaTime, 0, Space.Self);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == 10)
+        {
+            if (coinMesh != null) coinMesh.SetActive(false);
+            if (GameManager.instance != null) GameManager.instance.addCoin();
+            if (coinParticles != null) coinParticles.SetActive(true);
+            StartCoroutine(collected());
+        }
+    }
+
+    IEnumerator collected()
+    {
+        yield return new WaitForSeconds(1f);
+        if (coinMesh != null) coinMesh.SetActive(true);
+        if (coinParticles != null) coinParticles.SetActive(false);
+        if (ObjectPooler.instance != null) ObjectPooler.instance.ReturnObject(gameObject, 2);
     }
 }

@@ -13,7 +13,7 @@ public class pathSpawner : MonoBehaviour
     [SerializeField, Range(0f, 2f)] float timeBTWspawns;
 
     int count, side = -1, minLength, maxLength;
-    float lastTime = 0;
+    float lastTime = 0f, coinChance = 0f;
     GameObject spawnedTile;
     Vector3 spawnPos;
 
@@ -70,6 +70,14 @@ public class pathSpawner : MonoBehaviour
                 spawnedTile.transform.eulerAngles = new Vector3(0, -45, 0);
 
                 count--;
+
+                coinChance = Random.Range(0f, 1f);
+                if (coinChance < 0.1f)
+                {
+                    GameObject coin = pool.GetObject(1);
+                    coin.transform.position = new Vector3(spawnedTile.transform.position.x, 0.5f, spawnedTile.transform.position.z);
+                    coin.SetActive(true);
+                }
             }
         }
     }
