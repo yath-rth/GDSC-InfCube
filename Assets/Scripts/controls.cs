@@ -44,6 +44,42 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""escape"",
+                    ""type"": ""Button"",
+                    ""id"": ""851d5c77-71c6-4d19-a57e-79ffd003a829"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""space"",
+                    ""type"": ""Button"",
+                    ""id"": ""d8acbe67-57e3-481b-a66a-7f9f0688957b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""mainMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""0b16d8c9-6b04-4da3-8ac2-25c8f8ee2e44"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""shop"",
+                    ""type"": ""Button"",
+                    ""id"": ""675a5ccc-fb92-44b6-927a-005b7396d995"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -51,6 +87,17 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""ca1817f2-b057-49e8-bf87-93e37863b7fb"",
                     ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b0551093-12c1-4911-af8b-0048ac074a82"",
+                    ""path"": ""<Keyboard>/rightArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -68,6 +115,61 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""left"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""372a1eae-def9-497c-8fc4-ec1db6c711ba"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""71bd3188-c2bf-463b-8943-2e612168547b"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""escape"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7ec2e3ed-31c2-4c83-a228-ac3e6d051b6d"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""space"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f42a6959-05df-4d17-9120-01117607a9e3"",
+                    ""path"": ""<Keyboard>/m"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""mainMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d7208050-e2d0-4d7d-a72a-61f0a4cf91e3"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""shop"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -78,6 +180,10 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_movement = asset.FindActionMap("movement", throwIfNotFound: true);
         m_movement_right = m_movement.FindAction("right", throwIfNotFound: true);
         m_movement_left = m_movement.FindAction("left", throwIfNotFound: true);
+        m_movement_escape = m_movement.FindAction("escape", throwIfNotFound: true);
+        m_movement_space = m_movement.FindAction("space", throwIfNotFound: true);
+        m_movement_mainMenu = m_movement.FindAction("mainMenu", throwIfNotFound: true);
+        m_movement_shop = m_movement.FindAction("shop", throwIfNotFound: true);
     }
 
     ~@Controls()
@@ -146,12 +252,20 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private List<IMovementActions> m_MovementActionsCallbackInterfaces = new List<IMovementActions>();
     private readonly InputAction m_movement_right;
     private readonly InputAction m_movement_left;
+    private readonly InputAction m_movement_escape;
+    private readonly InputAction m_movement_space;
+    private readonly InputAction m_movement_mainMenu;
+    private readonly InputAction m_movement_shop;
     public struct MovementActions
     {
         private @Controls m_Wrapper;
         public MovementActions(@Controls wrapper) { m_Wrapper = wrapper; }
         public InputAction @right => m_Wrapper.m_movement_right;
         public InputAction @left => m_Wrapper.m_movement_left;
+        public InputAction @escape => m_Wrapper.m_movement_escape;
+        public InputAction @space => m_Wrapper.m_movement_space;
+        public InputAction @mainMenu => m_Wrapper.m_movement_mainMenu;
+        public InputAction @shop => m_Wrapper.m_movement_shop;
         public InputActionMap Get() { return m_Wrapper.m_movement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -167,6 +281,18 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @left.started += instance.OnLeft;
             @left.performed += instance.OnLeft;
             @left.canceled += instance.OnLeft;
+            @escape.started += instance.OnEscape;
+            @escape.performed += instance.OnEscape;
+            @escape.canceled += instance.OnEscape;
+            @space.started += instance.OnSpace;
+            @space.performed += instance.OnSpace;
+            @space.canceled += instance.OnSpace;
+            @mainMenu.started += instance.OnMainMenu;
+            @mainMenu.performed += instance.OnMainMenu;
+            @mainMenu.canceled += instance.OnMainMenu;
+            @shop.started += instance.OnShop;
+            @shop.performed += instance.OnShop;
+            @shop.canceled += instance.OnShop;
         }
 
         private void UnregisterCallbacks(IMovementActions instance)
@@ -177,6 +303,18 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @left.started -= instance.OnLeft;
             @left.performed -= instance.OnLeft;
             @left.canceled -= instance.OnLeft;
+            @escape.started -= instance.OnEscape;
+            @escape.performed -= instance.OnEscape;
+            @escape.canceled -= instance.OnEscape;
+            @space.started -= instance.OnSpace;
+            @space.performed -= instance.OnSpace;
+            @space.canceled -= instance.OnSpace;
+            @mainMenu.started -= instance.OnMainMenu;
+            @mainMenu.performed -= instance.OnMainMenu;
+            @mainMenu.canceled -= instance.OnMainMenu;
+            @shop.started -= instance.OnShop;
+            @shop.performed -= instance.OnShop;
+            @shop.canceled -= instance.OnShop;
         }
 
         public void RemoveCallbacks(IMovementActions instance)
@@ -198,5 +336,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     {
         void OnRight(InputAction.CallbackContext context);
         void OnLeft(InputAction.CallbackContext context);
+        void OnEscape(InputAction.CallbackContext context);
+        void OnSpace(InputAction.CallbackContext context);
+        void OnMainMenu(InputAction.CallbackContext context);
+        void OnShop(InputAction.CallbackContext context);
     }
 }

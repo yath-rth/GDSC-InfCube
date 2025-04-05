@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class player : MonoBehaviour
 {
+    public static player instance;
+
     Controls controls;
     CharacterController cc;
     GameManager gameManager;
@@ -20,13 +22,19 @@ public class player : MonoBehaviour
 
     void Awake()
     {
+        if (instance != null) Destroy(instance.gameObject);
+        instance = this;
+
+        cc = GetComponent<CharacterController>();
+        gameManager = GameManager.instance;
+
         controls = new Controls();
 
         controls.movement.left.performed += ctx => left();
         controls.movement.right.performed += ctx => right();
-
-        cc = GetComponent<CharacterController>();
-        gameManager = GameManager.instance;
+        controls.movement.escape.performed += ctx => gameManager.pauseResume();
+        controls.movement.mainMenu.performed += ctx => gameManager.mainMenu();
+        controls.movement.space.performed += ctx => gameManager.restart();
 
         if (cam != null) cameraOffset = cam.position - transform.position;
 
@@ -72,12 +80,12 @@ public class player : MonoBehaviour
         }
     }
 
-    void left()
+    public void left()
     {
         side = -1;
     }
 
-    void right()
+    public void right()
     {
         side = 1;
     }

@@ -7,13 +7,15 @@ using DG.Tweening;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+    player Player;
+    sceneManager sceneManager;
 
     public bool isGameOver = false;
 
     [SerializeField] TMP_Text scoreText, endScreenScoreText, pauseScreenScoreText, highScoreText, coinsText;
     [SerializeField] GameObject scoreText_obj, endScreen_Obj, deathParticles, otherUI_obj, pauseScreen_obj;
 
-    int score, highScore, coins, Allcoins;
+    int score, highScore, coins, Allcoins, gameState = 1;
 
     void OnDestroy()
     {
@@ -25,8 +27,18 @@ public class GameManager : MonoBehaviour
         if (instance != null) Destroy(instance.gameObject);
         instance = this;
 
+        Player = player.instance;
+        sceneManager = GetComponent<sceneManager>();
+
         highScore = PlayerPrefs.GetInt("HighScore", 0);
         Allcoins = PlayerPrefs.GetInt("AllCoins", 0);
+
+        if (coinsText != null) coinsText.text = coins.ToString("D3");
+    }
+
+    public sceneManager GetSceneManager()
+    {
+        return sceneManager;
     }
 
     public void addScore(int value)
@@ -46,11 +58,13 @@ public class GameManager : MonoBehaviour
         Allcoins++;
 
         if (coinsText != null) coinsText.gameObject.transform.DOPunchScale(Vector3.one * 0.2f, 0.1f);
-        if (coinsText != null) coinsText.text = coins.ToString();
+        if (coinsText != null) coinsText.text = coins.ToString("D3");
     }
 
     public void GameOver()
     {
+        gameState = 0;
+
         isGameOver = true;
         if (endScreen_Obj != null) endScreen_Obj.SetActive(true);
         if (deathParticles != null) deathParticles.SetActive(true);
@@ -61,18 +75,54 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.SetInt("HighScore", highScore);
     }
 
+    public void mainMenu()
+    {
+        if (gameState == 0)
+        {
+            sceneManager.MainMenu();
+        }
+    }
+
+    public void restart()
+    {
+        if (gameState == 0) sceneManager.Game();
+    }
+
     public void pause()
     {
-        pauseScreenScoreText.text = score.ToString("D5");
-        otherUI_obj.SetActive(false);
-        pauseScreen_obj.SetActive(true);
-        Time.timeScale = 0;
+        if (gameState == 1)
+        {
+            pauseScreenScoreText.text = score.ToString("D5");
+            otherUI_obj.SetActive(false);
+            pauseScreen_obj.SetActive(true);
+            Time.timeScale = 0;
+        }
     }
 
     public void resume()
     {
-        otherUI_obj.SetActive(true);
-        pauseScreen_obj.SetActive(false);
-        Time.timeScale = 1;
+        if (gameState == 0)
+        {
+            otherUI_obj.SetActive(true);
+            pauseScreen_obj.SetActive(false);
+            Time.timeScale = 1;
+        }
+    }
+
+    public void pauseResume()
+    {
+        if(isGameOver == false)
+        {
+            if (gameState == 1)
+            {
+                pause();
+                gameState = 0;
+            }
+            else
+            {
+                resume();
+                gameState = 1;
+            }
+        }
     }
 }

@@ -149,3 +149,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fallerLayer: 9
   counterLayer: 10
+  player: {fileID: 2100000, guid: 449bd387342e2f448832532b2e451db0, type: 2}
+  tile: {fileID: 2100000, guid: ceb39b40df3883e44b112a5f02abc0b9, type: 2}
