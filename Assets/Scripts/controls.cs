@@ -80,6 +80,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""leaderboard"",
+                    ""type"": ""Button"",
+                    ""id"": ""ca60ae22-b6ef-458d-8053-f245b768462d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -152,7 +161,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""f42a6959-05df-4d17-9120-01117607a9e3"",
-                    ""path"": ""<Keyboard>/m"",
+                    ""path"": ""<Keyboard>/r"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -170,6 +179,17 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""shop"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a95b0b82-4cd2-4d3c-ba8d-9e47c9983f33"",
+                    ""path"": ""<Keyboard>/l"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""leaderboard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -184,6 +204,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_movement_space = m_movement.FindAction("space", throwIfNotFound: true);
         m_movement_mainMenu = m_movement.FindAction("mainMenu", throwIfNotFound: true);
         m_movement_shop = m_movement.FindAction("shop", throwIfNotFound: true);
+        m_movement_leaderboard = m_movement.FindAction("leaderboard", throwIfNotFound: true);
     }
 
     ~@Controls()
@@ -256,6 +277,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_movement_space;
     private readonly InputAction m_movement_mainMenu;
     private readonly InputAction m_movement_shop;
+    private readonly InputAction m_movement_leaderboard;
     public struct MovementActions
     {
         private @Controls m_Wrapper;
@@ -266,6 +288,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public InputAction @space => m_Wrapper.m_movement_space;
         public InputAction @mainMenu => m_Wrapper.m_movement_mainMenu;
         public InputAction @shop => m_Wrapper.m_movement_shop;
+        public InputAction @leaderboard => m_Wrapper.m_movement_leaderboard;
         public InputActionMap Get() { return m_Wrapper.m_movement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -293,6 +316,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @shop.started += instance.OnShop;
             @shop.performed += instance.OnShop;
             @shop.canceled += instance.OnShop;
+            @leaderboard.started += instance.OnLeaderboard;
+            @leaderboard.performed += instance.OnLeaderboard;
+            @leaderboard.canceled += instance.OnLeaderboard;
         }
 
         private void UnregisterCallbacks(IMovementActions instance)
@@ -315,6 +341,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @shop.started -= instance.OnShop;
             @shop.performed -= instance.OnShop;
             @shop.canceled -= instance.OnShop;
+            @leaderboard.started -= instance.OnLeaderboard;
+            @leaderboard.performed -= instance.OnLeaderboard;
+            @leaderboard.canceled -= instance.OnLeaderboard;
         }
 
         public void RemoveCallbacks(IMovementActions instance)
@@ -340,5 +369,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         void OnSpace(InputAction.CallbackContext context);
         void OnMainMenu(InputAction.CallbackContext context);
         void OnShop(InputAction.CallbackContext context);
+        void OnLeaderboard(InputAction.CallbackContext context);
     }
 }

@@ -10,37 +10,27 @@ public class pathSpawner : MonoBehaviour
 
     [SerializeField, Range(0, 2f)] float tileSize;
     [SerializeField, Range(0, 20)] int minLength_min, maxLength_min, minLength_max, maxLength_max;
-    [SerializeField, Range(0f, 2f)] float timeBTWspawns;
+    [SerializeField] double timeBTWspawns;
 
-    int count, side = -1, minLength, maxLength;
-    float lastTime = 0f, coinChance = 0f;
+    int count, side = -1, minLength, maxLength, startCount = 8;
+    double lastTime = 0f, coinChance = 0f;
     GameObject spawnedTile;
     Vector3 spawnPos;
 
     void Start()
     {
+        startCount = 5;
         pool = ObjectPooler.instance;
         spawnPos = Vector3.zero;
-        spawnPos.z = -tileSize * 8;
+        spawnPos.z = -tileSize * startCount;
 
-        if (player != null) player.position = new Vector3(0, player.position.y, spawnPos.z);
-
-        if (pool != null)
-        {
-            for (int i = 0; i < 8; i++)
-            {
-                spawnedTile = pool.GetObject(0);
-                spawnedTile.transform.position = spawnPos;
-                spawnedTile.SetActive(true);
-                spawnedTile.transform.localScale = new Vector3(tileSize, 0.2f, tileSize);
-
-                spawnPos.z += tileSize;
-            }
-        }
+        //if (player != null) player.position = new Vector3(0, player.position.y, spawnPos.z);
     }
 
     void Update()
     {
+        lastTime += Time.deltaTime;
+
         if (count <= 0)
         {
             minLength = Random.Range(minLength_min, minLength_max);
@@ -50,33 +40,46 @@ public class pathSpawner : MonoBehaviour
             else side = (side == 0) ? 1 : 0;
         }
 
-        if (Time.time - lastTime > timeBTWspawns && !GameManager.instance.isGameOver)
+        if (lastTime > timeBTWspawns && !UIManager.instance.isGameOver && sceneManager.GameState == 1)
         {
-            lastTime = Time.time;
+            lastTime = 0f;
 
             if (pool != null)
             {
-                spawnedTile = pool.GetObject(0);
-                spawnedTile.transform.position = spawnPos;
-
-                spawnPos.z += tileSize / 1.41f;
-
-                if (side == 0) spawnPos.x += tileSize / 1.41f;
-                else if (side == 1) spawnPos.x -= tileSize / 1.41f;
-
-                spawnedTile.SetActive(true);
-
-                spawnedTile.transform.localScale = new Vector3(tileSize, 0.2f, tileSize);
-                spawnedTile.transform.eulerAngles = new Vector3(0, -45, 0);
-
-                count--;
-
-                coinChance = Random.Range(0f, 1f);
-                if (coinChance < 0.1f)
+                if (startCount <= 0)
                 {
-                    GameObject coin = pool.GetObject(1);
-                    coin.transform.position = new Vector3(spawnedTile.transform.position.x, 0.5f, spawnedTile.transform.position.z);
-                    coin.SetActive(true);
+                    spawnedTile = pool.GetObject(0);
+                    spawnedTile.transform.position = spawnPos;
+
+                    spawnPos.z += tileSize / 1.41f;
+
+                    if (side == 0) spawnPos.x += tileSize / 1.41f;
+                    else if (side == 1) spawnPos.x -= tileSize / 1.41f;
+
+                    spawnedTile.SetActive(true);
+
+                    spawnedTile.transform.localScale = new Vector3(tileSize, 0.2f, tileSize);
+                    spawnedTile.transform.eulerAngles = new Vector3(0, -45, 0);
+
+                    count--;
+
+                    coinChance = Random.Range(0f, 1f);
+                    if (coinChance < -1f) //Make the -1f to 0.1f if you want to start spawning coins again
+                    {
+                        GameObject coin = pool.GetObject(1);
+                        coin.transform.position = new Vector3(spawnedTile.transform.position.x, 0.5f, spawnedTile.transform.position.z);
+                        coin.SetActive(true);
+                    }
+                }
+                else
+                {
+                    spawnedTile = pool.GetObject(0);
+                    spawnedTile.transform.position = spawnPos;
+                    spawnedTile.SetActive(true);
+                    spawnedTile.transform.localScale = new Vector3(tileSize, 0.2f, tileSize);
+
+                    spawnPos.z += tileSize;
+                    startCount--;
                 }
             }
         }

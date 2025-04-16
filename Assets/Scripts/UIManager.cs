@@ -3,23 +3,46 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using DG.Tweening;
+using GooglePlayGames;
+using GooglePlayGames.BasicApi;
 
-public class GameManager : MonoBehaviour
+public class UIManager : MonoBehaviour
 {
-    public static GameManager instance;
+    public static UIManager instance;
+    public static bool isPlayConnected = false;
     player Player;
     sceneManager sceneManager;
 
     public bool isGameOver = false;
 
     [SerializeField] TMP_Text scoreText, endScreenScoreText, pauseScreenScoreText, highScoreText, coinsText;
-    [SerializeField] GameObject scoreText_obj, endScreen_Obj, deathParticles, otherUI_obj, pauseScreen_obj;
+    [SerializeField] GameObject scoreText_obj, endScreen_Obj, deathParticles, otherUI_obj, pauseScreen_obj, mainMenu_obj;
 
     int score, highScore, coins, Allcoins, gameState = 1;
 
     void OnDestroy()
     {
         if (instance == this) instance = null;
+    }
+
+    void Start()
+    {
+        Application.targetFrameRate = 150;
+        LoginToGooglePlay();
+    }
+
+    void LoginToGooglePlay()
+    {
+        PlayGamesPlatform.Instance.Authenticate(ProcessAuthentication);
+    }
+
+    internal void ProcessAuthentication(SignInStatus status)
+    {
+        if (status == SignInStatus.Success)
+        {
+            isPlayConnected = true;
+        }
+        else isPlayConnected = false;
     }
 
     void Awake()
@@ -30,10 +53,11 @@ public class GameManager : MonoBehaviour
         Player = player.instance;
         sceneManager = GetComponent<sceneManager>();
 
-        highScore = PlayerPrefs.GetInt("HighScore", 0);
+        //highScore = PlayerPrefs.GetInt("HighScore", 0);
         Allcoins = PlayerPrefs.GetInt("AllCoins", 0);
 
-        if (coinsText != null) coinsText.text = coins.ToString("D3");
+        if (coinsText != null) coinsText.text = coins.ToString("D2");
+        if (scoreText != null) coinsText.text = score.ToString("D3");
     }
 
     public sceneManager GetSceneManager()
@@ -46,7 +70,7 @@ public class GameManager : MonoBehaviour
         score += value;
 
         scoreText_obj.transform.localScale = Vector3.one;
-        if (scoreText != null) scoreText.text = score.ToString();
+        if (scoreText != null) scoreText.text = score.ToString("D3");
         if (scoreText_obj != null) scoreText_obj.transform.DOPunchScale(Vector3.one * 0.2f, 0.1f);
 
         if (score > highScore) highScore = score;
@@ -58,7 +82,7 @@ public class GameManager : MonoBehaviour
         Allcoins++;
 
         if (coinsText != null) coinsText.gameObject.transform.DOPunchScale(Vector3.one * 0.2f, 0.1f);
-        if (coinsText != null) coinsText.text = coins.ToString("D3");
+        if (coinsText != null) coinsText.text = coins.ToString("D2");
     }
 
     public void GameOver()
@@ -72,7 +96,31 @@ public class GameManager : MonoBehaviour
         if (otherUI_obj != null) otherUI_obj.SetActive(false);
         if (highScoreText != null) highScoreText.text = highScore.ToString("D5");
 
-        PlayerPrefs.SetInt("HighScore", highScore);
+        //PlayerPrefs.SetInt("HighScore", highScore);
+
+        if (isPlayConnected == true)
+        {
+            PlayGamesPlatform.Instance.ReportScore(highScore, GPGSIds.leaderboard_high_scores, (bool success) =>
+            {
+                if (success) Debug.Log("Score: " + highScore + " reported successfully.");
+                else Debug.Log("Failed to report score.");
+            });
+        }
+    }
+
+    public void gameStart()
+    {
+        if (mainMenu_obj != null) mainMenu_obj.SetActive(false);
+        if (otherUI_obj != null) otherUI_obj.SetActive(true);
+    }
+
+    public void showLeaderboard()
+    {
+        if (sceneManager.GameState == 0)
+        {
+            if (isPlayConnected == false) LoginToGooglePlay();
+            PlayGamesPlatform.Instance.ShowLeaderboardUI(GPGSIds.leaderboard_high_scores);
+        }
     }
 
     public void mainMenu()
@@ -83,9 +131,33 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void shop()
+    {
+        if (sceneManager.GameState == 0)
+        {
+            sceneManager.instance.ShopView();
+            if (mainMenu_obj != null) mainMenu_obj.SetActive(false);
+            sceneManager.GameState = 2;
+        }
+    }
+
+    public void close()
+    {
+        if (sceneManager.GameState == 2)
+        {
+            sceneManager.instance.GameView();
+            if (mainMenu_obj != null) mainMenu_obj.SetActive(true);
+            sceneManager.GameState = 0;
+        }
+        else if (sceneManager.GameState == 0)
+        {
+            Application.Quit();
+        }
+    }
+
     public void restart()
     {
-        if (gameState == 0) sceneManager.Game();
+        if (gameState == 0 && sceneManager.GameState == 1) sceneManager.Game();
     }
 
     public void pause()
@@ -111,7 +183,7 @@ public class GameManager : MonoBehaviour
 
     public void pauseResume()
     {
-        if(isGameOver == false)
+        if (isGameOver == false)
         {
             if (gameState == 1)
             {

@@ -58,6 +58,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "leaderboard",
+                    "type": "Button",
+                    "id": "ca60ae22-b6ef-458d-8053-f245b768462d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -130,7 +139,7 @@
                 {
                     "name": "",
                     "id": "f42a6959-05df-4d17-9120-01117607a9e3",
-                    "path": "<Keyboard>/m",
+                    "path": "<Keyboard>/r",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -146,6 +155,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "shop",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a95b0b82-4cd2-4d3c-ba8d-9e47c9983f33",
+                    "path": "<Keyboard>/l",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "leaderboard",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

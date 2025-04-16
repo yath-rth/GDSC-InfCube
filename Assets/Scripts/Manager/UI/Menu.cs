@@ -9,21 +9,27 @@ public class Menu : MonoBehaviour
     public float openTime;
     public float waitTime;
 
+    public Vector3 size = Vector3.one;
+
     WaitForSecondsRealtime wait;
 
-    private void Start() {
+    private void OnEnable()
+    {
         wait = new WaitForSecondsRealtime(waitTime);
 
         StartCoroutine(opened());
     }
 
-    IEnumerator opened(){
-        foreach(GameObject obj in objects){
+    IEnumerator opened()
+    {
+        foreach (GameObject obj in objects)
+        {
             obj.transform.localScale = Vector3.zero;
         }
 
-        foreach(GameObject obj in objects){
-            obj.transform.DOScale(Vector3.one, openTime).SetEase(Ease.OutBounce).SetUpdate(true);
+        foreach (GameObject obj in objects)
+        {
+            obj.transform.DOScale(size, openTime).SetEase(Ease.OutBounce).SetUpdate(true);
             yield return wait;
         }
     }

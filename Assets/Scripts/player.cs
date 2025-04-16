@@ -6,11 +6,12 @@ public class player : MonoBehaviour
 {
     public static player instance;
 
+    GameObject tileFaller, Scorer;
     Controls controls;
     CharacterController cc;
-    GameManager gameManager;
+    UIManager gameManager;
 
-    [SerializeField] Transform cam;
+    [SerializeField] Transform cam, bgParticles, moveParticles;
     [SerializeField, Range(0, 10f)] float minSpeed, maxSpeed;
     [SerializeField, Range(0, 1f)] float speedIncrement;
     [SerializeField, Range(0, 100f)] float gravity, rotationSpeed;
@@ -22,21 +23,40 @@ public class player : MonoBehaviour
 
     void Awake()
     {
+        side = 0;
+
         if (instance != null) Destroy(instance.gameObject);
         instance = this;
 
         cc = GetComponent<CharacterController>();
-        gameManager = GameManager.instance;
+        gameManager = UIManager.instance;
+
+        tileFaller = transform.GetChild(0).gameObject;
+        Scorer = transform.GetChild(1).gameObject;
+
+        if (tileFaller != null) tileFaller.SetActive(false);
+        if (Scorer != null) Scorer.SetActive(false);
+        if (moveParticles != null) moveParticles.gameObject.SetActive(false);
 
         controls = new Controls();
 
         controls.movement.left.performed += ctx => left();
         controls.movement.right.performed += ctx => right();
-        controls.movement.escape.performed += ctx => gameManager.pauseResume();
+        controls.movement.escape.performed += ctx => gameManager.close();
         controls.movement.mainMenu.performed += ctx => gameManager.mainMenu();
         controls.movement.space.performed += ctx => gameManager.restart();
+        controls.movement.space.performed += ctx => sceneManager.instance.Game();
+        controls.movement.leaderboard.performed += ctx => gameManager.showLeaderboard();
+        controls.movement.shop.performed += ctx => gameManager.shop();
 
         if (cam != null) cameraOffset = cam.position - transform.position;
+
+        if (bgParticles != null)
+        {
+            ParticleSystemRenderer renderer = bgParticles.GetComponent<ParticleSystemRenderer>();
+            renderer.material.renderQueue = 3000;
+            renderer.sortingOrder = 1;
+        }
 
         _speed = minSpeed;
     }
@@ -52,8 +72,17 @@ public class player : MonoBehaviour
 
     void Update()
     {
-        if (cc != null)
+        if (sceneManager.GameState == 0)
         {
+            if (tileFaller != null) tileFaller.SetActive(false);
+            if (Scorer != null) Scorer.SetActive(false);
+        }
+
+        if (cc != null && sceneManager.GameState == 1)
+        {
+            if (tileFaller != null) tileFaller.SetActive(true);
+            if (Scorer != null) Scorer.SetActive(true);
+
             if (transform.position.y < -1 && gameManager != null) gameManager.GameOver();
 
             if (!cc.isGrounded) velocity.y -= gravity * Time.deltaTime;
@@ -61,6 +90,7 @@ public class player : MonoBehaviour
 
             if (!gameManager.isGameOver)
             {
+                if (moveParticles != null) moveParticles.gameObject.SetActive(true);
                 _speed += speedIncrement * Time.deltaTime;
                 _speed = Mathf.Clamp(_speed, minSpeed, maxSpeed);
 
@@ -71,11 +101,14 @@ public class player : MonoBehaviour
                 transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * rotationSpeed);
 
                 if (cam != null) cam.position = transform.position + cameraOffset;
+                if (bgParticles != null) bgParticles.position = new Vector3(transform.position.x, bgParticles.position.y, transform.position.z + 20);
             }
             else
             {
                 move = new Vector3(0, velocity.y, 0);
                 cc.Move(move * Time.deltaTime);
+                if (moveParticles != null) moveParticles.gameObject.SetActive(false);
+
             }
         }
     }

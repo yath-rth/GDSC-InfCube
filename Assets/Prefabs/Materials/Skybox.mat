@@ -20,7 +20,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
-  m_LockedProperties: 
+  m_LockedProperties: _Stars_Color
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -39,11 +39,13 @@ Material:
     m_Ints: []
     m_Floats:
     - _HorizonAmt: 0.673
+    - _Particle_Size: 0
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
-    - _HorizonColor: {r: 0.4563501, g: 0.642602, b: 0.9029649, a: 0}
-    - _SkyColor: {r: 0.7789757, g: 0.48732364, b: 0.15852469, a: 0}
+    - _HorizonColor: {r: 0.9294118, g: 0.34117648, b: 0.50980395, a: 0}
+    - _SkyColor: {r: 0.45882356, g: 0.8588236, b: 0.72156864, a: 0}
+    - _Stars_Color: {r: 0.99999994, g: 0.99999994, b: 0.99999994, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &9212754987421851714
 MonoBehaviour:

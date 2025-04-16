@@ -14,6 +14,11 @@ public class Tile : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
+    public void setfallerLayer(int layer)
+    {
+        fallerLayer = layer;
+    }
+
     IEnumerator passBy()
     {
         if (rb != null)
@@ -39,7 +44,7 @@ public class Tile : MonoBehaviour
 
         if(other.gameObject.layer == counterLayer)
         {
-            if(GameManager.instance != null) GameManager.instance.addScore(1);
+            if(UIManager.instance != null) UIManager.instance.addScore(1);
         }
     }
 }
