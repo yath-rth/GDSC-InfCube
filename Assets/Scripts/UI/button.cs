@@ -8,6 +8,6 @@ public class button : MonoBehaviour
     public void OnClick()
     {
         transform.localScale = Vector3.one;
-        transform.DOPunchScale(new Vector3(.15f, 0.15f, .15f), 0.25f).SetUpdate(true);
+        transform.DOPunchScale(new Vector3(.15f, 0.15f, 0.15f), 0.1f).SetUpdate(true);
     }
 }

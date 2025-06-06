@@ -22,7 +22,7 @@ public class GameColorManager : MonoBehaviour
         playerColor = Color.Lerp(colors[colorIndex].color1, colors[colorIndex].color2, 0.5f);
         playerColor = new Color(playerColor.r - playerTint, playerColor.g - playerTint, playerColor.b - playerTint, playerColor.a);
         Debug.Log(playerColor);
-        player.SetColor("_BaseColor", playerColor);
+        if(player != null) player.SetColor("_BaseColor", playerColor);
 
         skybox.SetColor("_SkyColor", colors[colorIndex].color1);
         skybox.SetColor("_HorizonColor", colors[colorIndex].color2);

@@ -4,9 +4,5 @@ using System.Collections.Generic;
 public class PlayerData
 {
     public int totalCoins;
-
-    public PlayerData(int coins)
-    {
-        totalCoins = coins;
-    }
+    public int highScore;
 }

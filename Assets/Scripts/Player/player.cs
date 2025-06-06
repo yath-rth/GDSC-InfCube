@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class player : MonoBehaviour
+public class player : MonoBehaviour, ISaveFuncs
 {
     public static player instance;
 
@@ -65,6 +65,16 @@ public class player : MonoBehaviour
     void OnDisable()
     {
         controls.Disable();
+    }
+
+    void ISaveFuncs.LoadData(PlayerData data)
+    {
+
+    }
+
+    void ISaveFuncs.SaveData(PlayerData data)
+    {
+
     }
 
     void Update()
