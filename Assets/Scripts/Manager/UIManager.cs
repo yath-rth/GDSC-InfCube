@@ -16,7 +16,7 @@ public class UIManager : MonoBehaviour
     public bool isGameOver = false;
 
     [SerializeField] TMP_Text scoreText, endScreenScoreText, pauseScreenScoreText, highScoreText, coinsText;
-    [SerializeField] GameObject scoreText_obj, endScreen_Obj, deathParticles, otherUI_obj, pauseScreen_obj, mainMenu_obj;
+    [SerializeField] GameObject scoreText_obj, endScreen_Obj, deathParticles, otherUI_obj, pauseScreen_obj, mainMenu_obj, shopMenu_obj;
 
     int score, highScore, coins, Allcoins, gameState = 1;
 
@@ -173,6 +173,7 @@ public class UIManager : MonoBehaviour
         if (sceneManager.GameState == 0)
         {
             sceneManager.instance.ShopView();
+            if( shopMenu_obj != null) shopMenu_obj.SetActive(true);
             if (mainMenu_obj != null) mainMenu_obj.SetActive(false);
             sceneManager.GameState = 2;
         }
@@ -184,6 +185,7 @@ public class UIManager : MonoBehaviour
         {
             sceneManager.instance.GameView();
             if (mainMenu_obj != null) mainMenu_obj.SetActive(true);
+            if (shopMenu_obj != null) shopMenu_obj.SetActive(false);
             sceneManager.GameState = 0;
         }
         else if (sceneManager.GameState == 0)
