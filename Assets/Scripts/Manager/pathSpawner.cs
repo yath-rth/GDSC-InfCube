@@ -8,7 +8,7 @@ public class pathSpawner : MonoBehaviour
 
     [SerializeField] Transform player;
 
-    [SerializeField, Range(0, 2f)] float tileSize;
+    [Range(0, 2f)]public float tileSize;
     [SerializeField, Range(0, 20)] int minLength_min, maxLength_min, minLength_max, maxLength_max;
     [SerializeField] double maxSpawnTime, minSpawnTime;
     double timeBTWspawns;
@@ -53,7 +53,7 @@ public class pathSpawner : MonoBehaviour
                 else side = (side == 0) ? 1 : 0;
             }
 
-            if (lastTime > timeBTWspawns && !UIManager.instance.isGameOver && sceneManager.GameState == 1)
+            if (lastTime > timeBTWspawns && !GameManager.instance.isGameOver && sceneManager.GameState == 1)
             {
                 lastTime = 0f;
 
@@ -77,12 +77,12 @@ public class pathSpawner : MonoBehaviour
                         count--;
 
                         coinChance = Random.Range(0f, 1f);
-                        if (coinChance < -1f) //Make the -1f to 0.1f if you want to start spawning coins again
+                        if (coinChance < 0.3f) //Make the -1f to 0.1f if you want to start spawning coins again
                         {
                             GameObject coin = pool.GetObject(1);
                             coin.transform.position = new Vector3(spawnedTile.transform.position.x, 0.5f, spawnedTile.transform.position.z);
                             coin.SetActive(true);
-                        }
+                        }   
                     }
                     else
                     {

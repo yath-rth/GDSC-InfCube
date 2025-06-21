@@ -16,7 +16,7 @@ public class pickableItem : MonoBehaviour
         if (other.gameObject.layer == 10)
         {
             if (coinMesh != null) coinMesh.SetActive(false);
-            if (UIManager.instance != null) UIManager.instance.addCoin();
+            if (GameManager.instance != null) GameManager.instance.addCoin();
             if (coinParticles != null) coinParticles.SetActive(true);
             StartCoroutine(collected());
         }

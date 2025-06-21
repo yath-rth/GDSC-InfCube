@@ -9,14 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7aa45f6493abfda43a73ff50e40fbba7, type: 3}
-  m_Name: Color 1
+  m_Script: {fileID: 11500000, guid: c5a527736a388db4dbb36293027cccb0, type: 3}
+  m_Name: New Increase Size
   m_EditorClassIdentifier: 
-  itemImage: {fileID: 0}
-  itemImageTint: {r: 1, g: 1, b: 1, a: 1}
-  itemName: 
-  itemPrice: 0
-  itemDescription: 
-  itemQuantity: 0
-  isPurchased: 0
-  effects: []
+  sizeIncreaseAmount: 0.5

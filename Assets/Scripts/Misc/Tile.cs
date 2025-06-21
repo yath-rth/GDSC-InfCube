@@ -44,7 +44,7 @@ public class Tile : MonoBehaviour
 
         if(other.gameObject.layer == counterLayer)
         {
-            if(UIManager.instance != null) UIManager.instance.addScore(1);
+            if(GameManager.instance != null) GameManager.instance.addScore(1);
         }
     }
 }

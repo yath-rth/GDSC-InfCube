@@ -9,7 +9,7 @@ public class player : MonoBehaviour, ISaveFuncs
     GameObject tileFaller, Scorer;
     Controls controls;
     CharacterController cc;
-    UIManager gameManager;
+    GameManager gameManager;
 
     [SerializeField] Transform cam, bgParticles, moveParticles;
     [SerializeField, Range(0, 10f)] float minSpeed, maxSpeed;
@@ -27,7 +27,7 @@ public class player : MonoBehaviour, ISaveFuncs
         instance = this;
 
         cc = GetComponent<CharacterController>();
-        gameManager = UIManager.instance;
+        gameManager = GameManager.instance;
 
         tileFaller = transform.GetChild(0).gameObject;
         Scorer = transform.GetChild(1).gameObject;
@@ -118,6 +118,12 @@ public class player : MonoBehaviour, ISaveFuncs
 
             }
         }
+    }
+
+    public void DecreaseSpeed(float decreaseAmt)
+    {
+        _speed -= decreaseAmt;
+        _speed = Mathf.Clamp(_speed, minSpeed, maxSpeed);
     }
 
     void turn()

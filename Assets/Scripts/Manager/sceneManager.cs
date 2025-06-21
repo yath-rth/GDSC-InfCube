@@ -40,7 +40,7 @@ public class sceneManager : MonoBehaviour
 
                 Time.timeScale = 1;
                 GameState = 1;
-                UIManager.instance.gameStart();
+                GameManager.instance.gameStart();
             });
         }
     }
